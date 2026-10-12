@@ -1,0 +1,96 @@
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import Seo from "../../components/Seo/Seo";
+import PageHero from "../../components/PageHero/PageHero";
+import { pageSeo } from "../../seo/siteMeta";
+import { useToast } from "../../context/ToastContext";
+import contactHeroImg from "../../assets/Images/ufs002.png";
+import { publicApi } from "../../services/publicApi";
+import "./ContactPage.css";
+
+const emptyForm = { name: "", email: "", phone: "", subject: "", message: "" };
+
+function ContactPage() {
+  const { showToast } = useToast();
+  const [form, setForm] = useState(emptyForm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === "#contact-form") {
+      const el = document.getElementById("contact-form");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [location.hash]);
+
+  const handleChange = (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const payload = Object.fromEntries(
+      Object.entries(form).map(([key, value]) => [key, value.trim()])
+    );
+
+    try {
+      await publicApi.submitContact(payload);
+      setForm(emptyForm);
+      showToast("Thank you for reaching out. We'll get back to you within 24 hours.", "success");
+    } catch (err) {
+      showToast(err.message, "error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="contact-page">
+      <Seo {...pageSeo.contact} />
+      <PageHero imageUrl={contactHeroImg} />
+
+      <div className="contact-section" id="contact-form">
+        <div className="content-wrap">
+          <div className="contact-intro">
+            <p className="contact-eyebrow">Get In Touch</p>
+            <h1 className="contact-heading">Contact Us</h1>
+          </div>
+
+          <div className="contact-form-wrap">
+            <form className="contact-form" onSubmit={handleSubmit}>
+              <div className="contact-form__row">
+                <div className="contact-form__field">
+                  <label htmlFor="name">Full Name</label>
+                  <input id="name" name="name" type="text" placeholder="Your full name" value={form.name} onChange={handleChange} required />
+                </div>
+                <div className="contact-form__field">
+                  <label htmlFor="email">Email Address</label>
+                  <input id="email" name="email" type="email" placeholder="you@example.com" value={form.email} onChange={handleChange} required />
+                </div>
+                <div className="contact-form__field">
+                  <label htmlFor="phone">Mobile Number</label>
+                  <input id="phone" name="phone" type="tel" placeholder="+91 00000 00000" value={form.phone} onChange={handleChange} required />
+                </div>
+              </div>
+              <div className="contact-form__field">
+                <label htmlFor="subject">Subject</label>
+                <input id="subject" name="subject" type="text" placeholder="How can we help?" value={form.subject} onChange={handleChange} required />
+              </div>
+              <div className="contact-form__field">
+                <label htmlFor="message">Message</label>
+                <textarea id="message" name="message" rows={5} placeholder="Write your message here..." value={form.message} onChange={handleChange} required />
+              </div>
+              <div className="contact-form__actions">
+                <button type="submit" className="contact-form__submit" aria-label="Send message" disabled={isSubmitting}>
+                  <i className={`fa-solid ${isSubmitting ? "fa-spinner fa-spin" : "fa-paper-plane"}`} />
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ContactPage;
