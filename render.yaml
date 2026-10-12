@@ -1,0 +1,37 @@
+services:
+  # Backend Service
+  - type: web
+    name: ufs-digital-backend
+    env: node
+    plan: free
+    rootDir: Backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_ORIGIN
+        fromService:
+          name: ufs-digital-frontend
+          type: static_site
+          property: url
+
+  # Frontend Service
+  - type: static_site
+    name: ufs-digital-frontend
+    env: static
+    plan: free
+    rootDir: Frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          name: ufs-digital-backend
+          type: web
+          property: url
+        suffix: /api
+      - key: VITE_MAPBOX_TOKEN
+        sync: false # Set this manually in Render dashboard
