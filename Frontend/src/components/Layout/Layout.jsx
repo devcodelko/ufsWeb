@@ -86,7 +86,7 @@ function Layout() {
           aria-label="Scroll to top"
           onClick={handleScrollTop}
         >
-          <i className="fa-solid fa-arrow-up" aria-hidden="true" />
+          <i className="fa-solid fa-chevron-up" aria-hidden="true" />
         </button>
       ) : null}
 

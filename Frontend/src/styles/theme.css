@@ -183,28 +183,52 @@ p {
   position: fixed;
   right: 18px;
   bottom: 18px;
-  width: 45px;
-  height:45px;
-  border: 0;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 50%;
-  background: #454545;
+  background: linear-gradient(135deg, #2f6fa0 0%, #255e81 55%, #1a4a66 100%);
   color: #fff;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(22, 33, 51, 0.15);
+  box-shadow: 0 8px 20px rgba(26, 74, 102, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.18);
   z-index: 60;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  animation: scroll-top-in 0.3s ease-out;
 }
 
 .scroll-top-btn:hover {
-  background: #626262;
+  background: linear-gradient(135deg, #3a81b8 0%, #2f6fa0 55%, #255e81 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px rgba(26, 74, 102, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.scroll-top-btn:active {
+  transform: translateY(-1px);
 }
 
 .scroll-top-btn i {
   line-height: 1;
   display: block;
+  transition: transform 0.2s ease;
+}
+
+.scroll-top-btn:hover i {
+  transform: translateY(-2px);
+}
+
+@keyframes scroll-top-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ─── Floating language toggle (near scroll-to-top) ─── */

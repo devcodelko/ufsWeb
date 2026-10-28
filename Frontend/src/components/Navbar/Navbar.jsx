@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import "./Navbar.css";
-import logoWhite from "../../assets/ufs_digital_logo_transparent.png";
-import logoDark from "../../assets/ufs_digital_logo.png";
+import logoDark from "../../assets/ufs_digital_logo-removebg-preview.png";
 import { useLanguage } from "../../context/LanguageContext";
 import translations from "../../locales/translations";
 
@@ -105,14 +104,12 @@ function Navbar() {
     .filter(Boolean)
     .join(" ");
 
-  const isAtTopOverlay = isOverlayRoute && isAtTop && !isMenuOpen;
-
   return (
     <header className={headerClassName}>
       <div className="content-wrap nav-content">
         <Link to="/" className="brand" aria-label="UFS Digital home">
           <img
-            src={isAtTopOverlay ? logoWhite : logoDark}
+            src={logoDark}
             alt="UFS Digital"
             className="brand-logo"
           />

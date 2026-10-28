@@ -69,8 +69,10 @@
 }
 
 .brand-logo {
-  height: var(--navbar-height);
+  height: calc(var(--navbar-height) - 14px);
   width: auto;
+  display: block;
+  transition: filter 0.25s ease;
 }
 
 .site-header--at-top .brand-logo {
@@ -280,7 +282,7 @@
   }
 
   .brand-logo {
-    height: var(--navbar-height-mobile);
+    height: calc(var(--navbar-height-mobile) - 12px);
   }
 
   .nav-content {
